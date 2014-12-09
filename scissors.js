@@ -224,6 +224,10 @@ Command.prototype._commandStream = function () {
   gs.stderr.on('data', function (data) {
     console.error('gs encountered an error:\n', String(data));
   });
+  gs.on('error',function(err) {
+    console.error('child process gs encountered an error:\n');
+    throw err;
+  });
   gs.on('exit', function (code) {
     stream.emit('end');
   });
