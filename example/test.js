@@ -16,3 +16,6 @@ pdf.contentStream().on('data', function (item) {
     console.log(item);
   }
 });
+
+// Output page 1 at 300 dpi in jpg format using simple rasterize.
+page.imageStream(300, 'jpg', 1, true).pipe(fs.createWriteStream(__dirname + '/test-page.jpg'));
