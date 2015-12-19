@@ -194,9 +194,18 @@ Command.prototype.pdfStream = function () {
   return cmd._exec();
 };
 
-Command.prototype.pngStream = function (dpi) {
+Command.prototype.pngStream = function (dpi, page, useSimpleRasterize) {
+  return this.imageStream(dpi, 'png', page, useSimpleRasterize);
+};
+
+Command.prototype.jpgStream = function (dpi, page, useSimpleRasterize) {
+  return this.imageStream(dpi, 'jpg', page, useSimpleRasterize);
+};
+
+Command.prototype.imageStream = function (dpi, format, page, useSimpleRasterize) {
   var cmd = this.repair();
-  cmd._push([path.join(__dirname, 'bin/rasterize.js'), this._input(), 'pdf', 1, dpi || 72]);
+  var rasterizer = useSimpleRasterize ? 'bin/simple_rasterize.js' : 'bin/rasterize.js';
+  cmd._push([path.join(__dirname, rasterizer), this._input(), format || 'png', page || 1, dpi || 72]);
   var stream = cmd._exec();
   return stream;
 };
